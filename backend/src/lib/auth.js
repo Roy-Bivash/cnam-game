@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+import { config } from "../config/config.js";
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -6,7 +9,7 @@ function authenticateToken(req, res, next) {
         return res.sendStatus(401); // Unauthorized if no token is provided
     }
 
-    jwt.verify(token, secretKey, (err, user) => {
+    jwt.verify(token, config.JWT_SECRET, (err, user) => {
         if (err) {
             return res.sendStatus(403); // Forbidden if token is invalid
         }

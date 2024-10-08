@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'JetBrains-Mono';
+    src: local('JetBrains Mono'),
+         url('../assets/fonts/JetBrainsMono-2.304/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  
+body {
+    font-family: 'JetBrains-Mono', monospace;
+}

@@ -3,10 +3,8 @@ const router = express.Router();
 import jwt from 'jsonwebtoken';
 import { config } from "../config/config.js";
 
-// const secretKey = 'your-secret-key';
-
-
 import { hashPassword, comparePassword } from "../lib/password.js";
+import { authenticateToken } from '../lib/auth.js';
 
 router.get('/list', (req, res) => {
     const db = req.db;
@@ -53,10 +51,10 @@ router.post('/login', async (req, res) => {
 
             // Set the token as an HTTP-only cookie
             res.cookie('token', token, {
-                httpOnly: true, // Prevents access by JavaScript
-                secure: process.env.NODE_ENV === 'production', // Set to true in production
-                sameSite: 'strict', // Ensures cookie is sent only with same-site requests
-                maxAge: 3600000, // 1 hour expiration
+                httpOnly: true, 
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict', 
+                maxAge: 3600000,
             });
 
             return res.json({
@@ -110,6 +108,21 @@ router.post('/register', async (req, res) => {
         return res.status(500).json({ error: 'Failed to create user' });
     }
 });
+
+router.get('/me', authenticateToken, (req, res) => {
+    const userInfo = {
+        id: req.user.id,
+        pseudo: req.user.pseudo,
+        admin: req.user.admin
+    };
+
+    res.json({
+        success: true,
+        message: "User info retrieved successfully",
+        user: userInfo
+    });
+});
+
 
 
 
