@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 import { verifyPasswordInput, verifyTextInput } from "@/lib/form";
 import { CustomFetch } from "@/lib/CustomFetch";
+import { wait } from "@/lib/timer";
 
 interface FormData {
     email: string | null;
@@ -18,9 +19,10 @@ interface FormData {
 }
 
 export default function Home(){
-    const [formData, setFormData] = useState<FormData>({ email:null, password:null, confirm_password:null, pseudo:null });
     const { toast } = useToast()
     const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [formData, setFormData] = useState<FormData>({ email:null, password:null, confirm_password:null, pseudo:null });
 
     function setForm(e:React.ChangeEvent<HTMLInputElement>){
         setFormData(prev =>({...prev, [e.target.name]:e.target.value}));
@@ -28,6 +30,7 @@ export default function Home(){
 
     async function formLogin(e:React.FormEvent<HTMLFormElement>){
         e.preventDefault();
+        setLoading(true);
         const { correct, message } = verifyTextInput(formData.email || "");
         
         if(!correct){
@@ -44,6 +47,8 @@ export default function Home(){
         });
 
         if(error){
+            setLoading(false);
+
             return toast({
                 title: "Error",
                 variant: "destructive",
@@ -53,14 +58,14 @@ export default function Home(){
         if(response?.success){
             navigate('/dashboard');
         } else{
-            // await wait(2);
+            await wait(2);
+            setLoading(false);
             return toast({
                 title: "Error",
                 variant: "destructive",
                 description: response.message
             });
         }
-
     }
 
     async function formRegister(e:React.FormEvent<HTMLFormElement>) {
