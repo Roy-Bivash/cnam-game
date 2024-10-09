@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 
 import router from "./src/router.js";
 import { config } from "./src/config/config.js";
@@ -7,6 +8,8 @@ import { initDb } from "./src/database/db.js";
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
+
 
 // Configure CORS
 app.use(cors({
