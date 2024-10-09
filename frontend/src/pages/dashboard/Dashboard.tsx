@@ -12,6 +12,16 @@ import {
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
+
   
 
 import { getMe } from "@/lib/current";
@@ -66,13 +76,72 @@ export default function Dashboard(){
                     </li>
                 </ul>
             </nav>
-            <main className="">
+            <main className="py-10">
 
-                <div id="deck_list">
-                    
+                <div id="deck_list" className="mx-5">
+                    <h4 className="text-xl">Deck 1</h4>
+                    <ScrollArea className="w-full">
+                        <div className="flex w-max space-x-4 p-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Card Title</CardTitle>
+                                    <CardDescription>Card Description</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p>Card Content</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <p>Card Footer</p>
+                                </CardFooter>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Card Title</CardTitle>
+                                    <CardDescription>Card Description</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p>Card Content</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <p>Card Footer</p>
+                                </CardFooter>
+                            </Card>
+                            
+                        </div>
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                    <h4 className="text-xl">Deck 2</h4>
+                    <ScrollArea className="w-full">
+                        <div className="flex w-max space-x-4 p-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Card Title</CardTitle>
+                                    <CardDescription>Card Description</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p>Card Content</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <p>Card Footer</p>
+                                </CardFooter>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Card Title</CardTitle>
+                                    <CardDescription>Card Description</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p>Card Content</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <p>Card Footer</p>
+                                </CardFooter>
+                            </Card>
+                            
+                        </div>
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
                 </div>
-
-
             </main>
         </>
     )
