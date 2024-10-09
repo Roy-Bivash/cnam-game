@@ -4,10 +4,16 @@ async function getMe(){
     const { response, error } = await CustomFetch('/users/me');
 
     if(error){
-        return false;
+        return {
+            success: false,
+            user: null
+        };
     }
 
-    return response.success || false;
+    return {
+        success: response.success || false,
+        user: response.user || null
+    }
 }
 
 export {

@@ -1,10 +1,21 @@
 import { getMe } from "@/lib/current";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard(){
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState();
+
     useEffect(() => {
-        console.log(getMe());
-    })
+        async function getUser(){
+            const data = await getMe();
+            if(!data.success){
+                navigate('/');
+            }
+            setCurrentUser(data.user);
+        }
+        getUser();
+    },[])
 
     return(
         <main className="min-h-screen">
