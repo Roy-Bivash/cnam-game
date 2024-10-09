@@ -71,8 +71,64 @@ export default function Home(){
 
     async function formRegister(e:React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log("register : ");
-        console.table(formData);
+        setLoading(true);
+
+        if(formData.password != formData.confirm_password){
+            setLoading(false);
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Error: Les mots de passe ne corresponde pas",
+            });
+        }
+
+        const validationResults = [
+            verifyTextInput(formData.email || ""),
+            verifyTextInput(formData.pseudo || ""),
+            verifyPasswordInput(formData.password || "")
+        ];
+
+        const errorInput = validationResults.find(result => !result.correct);
+        if (errorInput) {
+            setLoading(false);
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: errorInput.message,
+            });
+        }
+
+        // Api call
+        const { response, error } = await CustomFetch('/users/register', {
+            method: 'POST',
+            body: JSON.stringify({ pseudo: formData.pseudo, email: formData.email, password: formData.password }),
+        });
+        if(error){
+            setLoading(false);
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+
+        if(response?.success){
+            setLoading(false);
+            return toast({
+                title: "Success",
+                variant: "default",
+                description: "Your account is created, you can now log in"
+            });
+        } else{
+            await wait(2);
+            setLoading(false);
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: response.message
+            });
+        }
+
     }
 
     return (
