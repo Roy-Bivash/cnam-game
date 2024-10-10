@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "@/lib/current";
+import { getMe, logOut } from "@/lib/current";
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -8,14 +8,28 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from "@/components/ui/input";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 import char1 from "@/assets/characters/1.png";
 import char2 from "@/assets/characters/2.png";
 import char3 from "@/assets/characters/3.png";
 
+
+interface CurrentUser {
+    id: number,
+    pseudo: string,
+    email: string,
+    admin: number,
+    rank: number,
+    wins: number,
+    losses: number,
+    created_at: string
+}
+
 export default function Dashboard(){
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState<CurrentUser>();
+    const { toast } = useToast()
 
     useEffect(() => {
         async function getUser(){
@@ -27,6 +41,19 @@ export default function Dashboard(){
         }
         getUser();
     },[])
+
+    async function logOutPlayer(){
+        const res = await logOut();
+
+        if(!res){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+        navigate('/');
+    }
 
     return(
         <>
@@ -43,7 +70,7 @@ export default function Dashboard(){
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogAction>Oui</AlertDialogAction>
+                            <AlertDialogAction onClick={logOutPlayer}>Oui</AlertDialogAction>
                             <AlertDialogCancel>Non</AlertDialogCancel>
                         </AlertDialogFooter>
                     </AlertDialogContent>
@@ -90,12 +117,13 @@ export default function Dashboard(){
                 <div>
                     <h4 className="text-xl">Decks</h4>
 
-                    <ScrollArea className="w-full">
+                    <ScrollArea className="w-full mt-2">
                         <div className="flex w-max">
                             <Button variant="link" disabled>Deck 1</Button>
                             <Button variant="link">Deck 2</Button>
                             <Button variant="link">Deck 3</Button>
                             <Button variant="link">Deck 4</Button>
+                            <Button variant="ghost">New</Button>
                         </div>
                         <ScrollBar orientation="horizontal" />
                     </ScrollArea>

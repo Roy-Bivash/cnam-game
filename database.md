@@ -3,7 +3,7 @@ This table will store the information of each player (username, email, password,
 
 | Column Name    | Data Type       | Description                              |
 |----------------|-----------------|------------------------------------------|
-| `player_id`    | INT (PK)        | Unique identifier for each player.       |
+| `id`    | INT (PK)        | Unique identifier for each player.       |
 | `pseudo`       | VARCHAR(50)     | The player's username or pseudonym.      |
 | `email`        | VARCHAR(100)    | Player's email address (unique).         |
 | `password`     | VARCHAR(255)    | Password hash for security.              |
@@ -17,7 +17,7 @@ This table will store information about all available cards.
 
 | Column Name    | Data Type       | Description                              |
 |----------------|-----------------|------------------------------------------|
-| `card_id`      | INT (PK)        | Unique identifier for each card.         |
+| `id`      | INT (PK)        | Unique identifier for each card.         |
 | `image_url`    | VARCHAR(255)    | URL or path to the card's image.         |
 | `health`       | INT             | The health points of the card.           |
 | `damage`       | INT             | The damage points of the card.           |
@@ -30,7 +30,7 @@ This will store all possible tags.
 
 | Column Name    | Data Type       | Description                              |
 |----------------|-----------------|------------------------------------------|
-| `tag_id`       | INT (PK)        | Unique identifier for each tag.          |
+| `id`       | INT (PK)        | Unique identifier for each tag.          |
 | `tag_name`     | VARCHAR(50)     | Tag name (e.g., "attack", "defense").    |
 
 #### Card_Tags Table
@@ -46,7 +46,7 @@ A player can create multiple decks, and each deck can contain up to 5 cards. We'
 
 | Column Name    | Data Type       | Description                              |
 |----------------|-----------------|------------------------------------------|
-| `deck_id`      | INT (PK)        | Unique identifier for each deck.         |
+| `id`      | INT (PK)        | Unique identifier for each deck.         |
 | `player_id`    | INT (FK)        | Foreign key from `players` table.        |
 | `deck_name`    | VARCHAR(50)     | Name of the deck.                        |
 

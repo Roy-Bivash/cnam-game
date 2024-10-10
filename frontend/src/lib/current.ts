@@ -16,6 +16,15 @@ async function getMe(){
     }
 }
 
+async function logOut(){
+    const { response } = await CustomFetch('/users/logout', {
+        method: 'POST',
+    });
+
+    return response?.success || false;
+}
+
 export {
-    getMe
+    getMe,
+    logOut
 }
