@@ -26,8 +26,12 @@ export function Main({ decks, reload_deck }:MainProps){
 
     useEffect(() => {
         setSelectedDeck(decks[0]?.deck_name);
-        getAllCards();
+        console.log(decks[0]?.deck_name);
     }, [decks]);
+    
+    useEffect(() => {
+        getAllCards();
+    }, [])
 
     async function getAllCards(){
         const { response, error } = await CustomFetch('/card');
