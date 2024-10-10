@@ -5,6 +5,14 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { DeckCard } from "../deckCard/DeckCard";
 import { PlayerDeckCard, PlayerDeck } from "@/interfaces/Deck";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
+  
 
 interface DeckProps{
     id:number,
@@ -12,6 +20,10 @@ interface DeckProps{
     card_list: Array<PlayerDeckCard>
 }
 export function Deck({ id, deck, card_list }: DeckProps){
+    async function addCardToDeck(){
+        // TODO
+    }
+
     return(
         <>
             <div className="flex justify-between items-center py-1">
@@ -38,9 +50,16 @@ export function Deck({ id, deck, card_list }: DeckProps){
                                     <AlertDialogDescription>
                                         AJouter une carte a votre deck
                                     </AlertDialogDescription>
-                                    <div className="space-y-1">
-                                        test
-                                    </div>
+                                    <Select>
+                                        <SelectTrigger className="w-[250px]">
+                                            <SelectValue placeholder="Cartes" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {card_list.map((el, i) => (
+                                                <SelectItem key={i} value={el.name}>{el.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="pt-4">
                                     <AlertDialogCancel>Annuler</AlertDialogCancel>
