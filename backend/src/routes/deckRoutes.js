@@ -67,7 +67,7 @@ router.get('/', authenticateToken, async (req, res) => {
         res.status(200).json({
             success: true,
             message: "decks retrieved successfully",
-            user: decksArray
+            decks: decksArray
         });
 
     } catch (error) {

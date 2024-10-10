@@ -13,18 +13,11 @@ export function Deck(){
         <>
             <h4 className="text-xl">Decks name</h4>
 
-            <ScrollArea className="w-full mt-2">
-                <div className="flex w-max">
-                    <Button variant="link" disabled>Deck 1</Button>
-                    <Button variant="link">Deck 2</Button>
-                    <Button variant="link">Deck 3</Button>
-                    <Button variant="link">Deck 4</Button>
-                    <Button variant="ghost">New</Button>
-                </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            
             <Separator orientation="horizontal" />
             <div className="mt-2 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+                <DeckCard />
+                <DeckCard />
                 <DeckCard />
                 {/* <Card>
                     <CardHeader>
