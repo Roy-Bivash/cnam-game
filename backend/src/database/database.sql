@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS players (
 -- 2. Cards Table
 CREATE TABLE IF NOT EXISTS cards (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(255),
     image_url VARCHAR(255),
     health INTEGER NOT NULL,
     damage INTEGER NOT NULL

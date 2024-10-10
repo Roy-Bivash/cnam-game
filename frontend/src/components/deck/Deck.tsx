@@ -3,60 +3,51 @@ import { Separator } from "@/components/ui/separator"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeckCard } from "../deckCard/DeckCard";
+import { PlayerDeckCard, PlayerDeck } from "@/interfaces/Deck";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
-import char1 from "@/assets/characters/1.png";
-import char2 from "@/assets/characters/2.png";
-import char3 from "@/assets/characters/3.png";
-
-export function Deck(){
+interface DeckProps{
+    id:number,
+    deck: PlayerDeck,
+    card_list: Array<PlayerDeckCard>
+}
+export function Deck({ id, deck, card_list }: DeckProps){
     return(
         <>
-            <h4 className="text-xl">Decks name</h4>
+            <div className="flex justify-between items-center py-1">
+                <h4 className="text-xl capitalize">{ deck.deck_name }</h4>
+                <Button variant={"destructive"}>Supprimer</Button>
+            </div>
 
-            
             <Separator orientation="horizontal" />
             <div className="mt-2 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
-                <DeckCard />
-                <DeckCard />
-                <DeckCard />
-                {/* <Card>
-                    <CardHeader>
-                        <div className="mb-4 relative h-64 w-full">
-                            <img src={char2} className="absolute inset-0 w-full h-full object-cover" />
-                        </div>
-                        <CardTitle>Card Title</CardTitle>
-                        <CardDescription>Card Description</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="justify-end">
-                        <Button variant="link">Retirer</Button>
-                    </CardFooter>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <div className="mb-4 relative h-64 w-full">
-                            <img src={char1} className="absolute inset-0 w-full h-full object-cover" />
-                        </div>
-                        <CardTitle>Card Title</CardTitle>
-                        <CardDescription>Card Description</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="justify-end">
-                        <Button variant="link">Retirer</Button>
-                    </CardFooter>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <div className="mb-4 relative h-64 w-full">
-                            <img src={char3} className="absolute inset-0 w-full h-full object-cover" />
-                        </div>
-                        <CardTitle>Card Title</CardTitle>
-                        <CardDescription>Card Description</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="justify-end">
-                        <Button variant="link">Retirer</Button>
-                    </CardFooter>
-                </Card> */}
+                {deck.cards.map((el, i) => (
+                    <DeckCard 
+                        key={i}
+                        carte={el}
+                    />
+                ))}
                 <Card className="">
-                    <Button variant="ghost" className="w-full h-full text-xl">Ajouter</Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="ghost" className="w-full h-full text-xl">Ajouter</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Carte</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        AJouter une carte a votre deck
+                                    </AlertDialogDescription>
+                                    <div className="space-y-1">
+                                        test
+                                    </div>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter className="pt-4">
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction type="submit">Valider</AlertDialogAction>
+                                </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </Card>
             </div>
         </>

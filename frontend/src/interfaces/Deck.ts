@@ -1,5 +1,6 @@
 interface PlayerDeckCard {
     id: number;
+    name: string;
     image_url: string;
     health: number;
     damage: number;

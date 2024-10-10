@@ -58,6 +58,7 @@ export default function Dashboard(){
             <Header />
             <Main
                 decks={deckList}
+                reload_deck={getAllMyDeck}
             />
         </>
     )

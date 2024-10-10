@@ -1,11 +1,18 @@
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+import { PlayerDeckCard } from "@/interfaces/Deck";
+
+
 import char1 from "@/assets/characters/1.png";
 import char2 from "@/assets/characters/2.png";
 import char3 from "@/assets/characters/3.png";
 
-export function DeckCard(){
+interface DeckCardProps{
+    carte:PlayerDeckCard
+}
+
+export function DeckCard({ carte }: DeckCardProps){
     return(
         <Card>
             <CardHeader>

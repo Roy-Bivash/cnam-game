@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 
-import { PlayerDeck } from "@/interfaces/Deck";
+import { PlayerDeck, PlayerDeckCard } from "@/interfaces/Deck";
 import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input";
@@ -14,18 +14,42 @@ import { CustomFetch } from "@/lib/CustomFetch";
 import { verifyTextInput } from "@/lib/form";
 
 interface MainProps {
-    decks: Array<PlayerDeck>
+    decks: Array<PlayerDeck>,
+    reload_deck: () => void,
 }
 
-export function Main({ decks }:MainProps){
+export function Main({ decks, reload_deck }:MainProps){
     const [selectedDeck, setSelectedDeck] = useState<string>(decks[0]?.deck_name);
     const [newDeckName, setNewDeckName] = useState<string>("");
+    const [allCards, setAllCards] = useState<Array<PlayerDeckCard>>([]);
     const { toast } = useToast();
 
     useEffect(() => {
         setSelectedDeck(decks[0]?.deck_name);
+        getAllCards();
     }, [decks]);
 
+    async function getAllCards(){
+        const { response, error } = await CustomFetch('/card');
+        if(error){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+        if(response?.success){
+            setAllCards(response.cards);
+
+            return;
+        }else{
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: response.message
+            });
+        }
+    }
 
     async function newDeckForm(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -52,6 +76,10 @@ export function Main({ decks }:MainProps){
             });
         }
         if(response?.success){
+            await reload_deck();
+            setSelectedDeck(newDeckName);
+            setNewDeckName("");
+
             return toast({
                 title: "Success",
                 variant: "default",
@@ -70,20 +98,14 @@ export function Main({ decks }:MainProps){
 
     return(
         <main className="py-10 px-2 lg:px-8">
-            <ScrollArea className="w-full mt-2">
-                <div className="flex w-max">
+            <Tabs defaultValue={selectedDeck}>
+                <TabsList>
                     {decks.map((el, i) => (
-                        <Button 
-                            key={i}
-                            variant="link" 
-                            disabled={(el.deck_name == selectedDeck)} 
-                        >
-                            { el.deck_name }
-                        </Button>
+                        <TabsTrigger key={i} value={el.deck_name}>{el.deck_name}</TabsTrigger>
                     ))}
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="link" className="p-0">New</Button>
+                            <Button variant="link">New</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <form onSubmit={newDeckForm}>
@@ -97,27 +119,24 @@ export function Main({ decks }:MainProps){
                                         <Input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} id="name" placeholder="Nom du deck" />
                                     </div>
                                 </AlertDialogHeader>
-                                <AlertDialogFooter>
+                                <AlertDialogFooter className="pt-4">
                                     <AlertDialogCancel>Annuler</AlertDialogCancel>
                                     <AlertDialogAction type="submit">Valider</AlertDialogAction>
                                 </AlertDialogFooter>
                             </form>
                         </AlertDialogContent>
                     </AlertDialog>
-                </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-            <Deck />
-
-
-            <Tabs defaultValue={selectedDeck} className="w-[400px]">
-                <TabsList>
-
-                    <TabsTrigger value="account">Account</TabsTrigger>
-                    <TabsTrigger value="password">Password</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account">Make changes to your account here.</TabsContent>
-                <TabsContent value="password">Change your password here.</TabsContent>
+                {decks.map((el, i) => (
+                    <TabsContent key={i} value={el.deck_name}>
+                        <Deck 
+                            key={i}
+                            id={el.deck_id}
+                            card_list={allCards}
+                            deck={el}
+                        />
+                    </TabsContent>
+                ))}
             </Tabs>
 
         </main>
