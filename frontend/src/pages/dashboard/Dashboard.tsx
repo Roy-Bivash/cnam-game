@@ -30,7 +30,24 @@ export default function Dashboard(){
 
     return(
         <>
-            <nav className="px-6 py-3 border-b">
+            <nav className="px-6 py-3 border-b flex justify-between items-center">
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="ghost">Quitter</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Vous nous quittez déjà ?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Quitter le jeux
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogAction>Oui</AlertDialogAction>
+                            <AlertDialogCancel>Non</AlertDialogCancel>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
                 <ul className="flex gap-4 items-center justify-end">
                     <li className="text-xs">
                         Online: 23
@@ -43,14 +60,22 @@ export default function Dashboard(){
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Vous avez un code ?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        <Input name="code" id="code" type="text" placeholder="Votre code" />
-                                    </AlertDialogDescription>
+                                    <AlertDialogTitle>Jouer avec un amie</AlertDialogTitle>
+                                    <Separator orientation="horizontal" />
                                 </AlertDialogHeader>
+                                <AlertDialogDescription className="pb-3 flex flex-col">
+                                    <span>
+                                        Partager votre code : <Button variant="link" className="p-0">#J7BU234</Button>
+                                    </span>
+                                    <span className="pt-8 pb-2">Vous avez un code ?</span>
+                                    <span className="flex w-full items-center space-x-2">
+                                        <Input name="code" id="code" type="text" placeholder="Code d'invitation" />
+                                        <Button type="submit">Join</Button>
+                                    </span>
+                                </AlertDialogDescription>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction>Continue</AlertDialogAction>
+                                    {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
