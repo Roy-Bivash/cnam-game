@@ -55,7 +55,9 @@ export default function Dashboard(){
 
     return(
         <>
-            <Header />
+            <Header 
+                link={currentUser?.link}
+            />
             <Main
                 decks={deckList}
                 reload_deck={getAllMyDeck}

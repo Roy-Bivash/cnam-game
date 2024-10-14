@@ -5,6 +5,7 @@ import { config } from "../config/config.js";
 
 import { hashPassword, comparePassword } from "../lib/password.js";
 import { authenticateToken } from '../lib/auth.js';
+import { createInviteLink } from '../lib/link.js';
 
 router.get('/list', (req, res) => {
     const db = req.db;
@@ -44,6 +45,7 @@ router.post('/login', async (req, res) => {
                     id: user.id,
                     pseudo: user.pseudo,
                     admin: user.admin,
+                    link: createInviteLink()
                 },
                 config.JWT_SECRET,
                 { expiresIn: '1h' }
@@ -112,7 +114,6 @@ router.post('/register', async (req, res) => {
 router.get('/me', authenticateToken, async (req, res) => {
     let userInfo = null;
     const db = req.db;
-
     try {
         const rows = await new Promise((resolve, reject) => {
             db.all('SELECT id, pseudo, email, admin, rank, wins, losses, created_at FROM players WHERE id=?;', [req.user.id], (err, rows) => {
@@ -134,7 +135,7 @@ router.get('/me', authenticateToken, async (req, res) => {
     res.json({
         success: true,
         message: "User info retrieved successfully",
-        user: userInfo
+        user: {...userInfo, link: req.user.link}
     });
 });
 

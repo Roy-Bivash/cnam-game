@@ -7,8 +7,11 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
+interface HeaderInterface{
+    link:string
+}
 
-export function Header(){
+export function Header({ link }: HeaderInterface){
     const navigate = useNavigate();
     const { toast } = useToast()
 
@@ -60,7 +63,7 @@ export function Header(){
                                 </AlertDialogHeader>
                                 <AlertDialogDescription className="pb-3 flex flex-col">
                                     <span>
-                                        Partager votre code : <Button variant="link" className="p-0">#J7BU234</Button>
+                                        Partager votre code : <Button variant="link" className="p-0">{ link }</Button>
                                     </span>
                                     <span className="pt-8 pb-2">Vous avez un code ?</span>
                                     <span className="flex w-full items-center space-x-2">

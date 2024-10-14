@@ -1,5 +1,6 @@
 interface CurrentUser {
     id: number,
+    link: string,
     pseudo: string,
     email: string,
     admin: number,
