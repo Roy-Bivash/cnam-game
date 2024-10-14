@@ -11,13 +11,13 @@ router.get('/', authenticateToken, async (req, res) => {
     const playerId = req.user.id;
 
     try {
-        // Ensure `db.all` returns a promise correctly.
         const decks = await new Promise((resolve, reject) => {
             db.all(`
                 SELECT 
                     d.id AS deck_id, 
                     d.deck_name,
                     c.id AS card_id, 
+                    c.name AS card_name,
                     c.image_url, 
                     c.health, 
                     c.damage
@@ -41,7 +41,7 @@ router.get('/', authenticateToken, async (req, res) => {
         const result = {};
 
         decks.forEach(deck => {
-            const { deck_id, deck_name, card_id, image_url, health, damage } = deck;
+            const { deck_id, deck_name, card_id, card_name, image_url, health, damage } = deck;
 
             if (!result[deck_id]) {
                 result[deck_id] = {
@@ -54,6 +54,7 @@ router.get('/', authenticateToken, async (req, res) => {
             if (card_id) {
                 result[deck_id].cards.push({
                     card_id,
+                    name: card_name,
                     image_url,
                     health,
                     damage
@@ -111,6 +112,78 @@ router.post('/new', authenticateToken, async (req, res) => {
     }
 });
 
+router.get('/delete/:deckId', authenticateToken, async (req, res) => {
+    const db = req.db;
+    const { deckId } = req.params;
+
+    try {
+        // First, check if the deck belongs to the authenticated player
+        const deck = await new Promise((resolve, reject) => {
+            db.get(`
+                SELECT * FROM decks WHERE id = ? AND player_id = ?
+            `, [deckId, req.user.id], (err, row) => {
+                if (err) return reject(err);
+                resolve(row);
+            });
+        });
+
+        if (!deck) {
+            return res.status(404).json({ error: 'Deck not found or does not belong to the player.' });
+        }
+
+        // Start a transaction to ensure everything gets deleted properly
+        await new Promise((resolve, reject) => {
+            db.run('BEGIN TRANSACTION', [], (err) => {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+
+        // Delete the deck from deck_cards (many-to-many relation)
+        await new Promise((resolve, reject) => {
+            db.run(`
+                DELETE FROM deck_cards WHERE deck_id = ?
+            `, [deckId], function (err) {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+
+        // Delete the deck from decks table
+        await new Promise((resolve, reject) => {
+            db.run(`
+                DELETE FROM decks WHERE id = ?
+            `, [deckId], function (err) {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+
+        // Commit the transaction
+        await new Promise((resolve, reject) => {
+            db.run('COMMIT', [], (err) => {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+
+        // Send response after successful deletion
+        res.status(200).json({ success: true, message: 'Deck deleted successfully' });
+
+    } catch (error) {
+        console.error(error);
+
+        // If something goes wrong, rollback the transaction
+        await new Promise((resolve, reject) => {
+            db.run('ROLLBACK', [], (err) => {
+                if (err) return reject(err);
+                resolve();
+            });
+        });
+
+        res.status(500).json({ success: false, message: 'An error occurred while deleting the deck.' });
+    }
+});
 
 
 export default router;

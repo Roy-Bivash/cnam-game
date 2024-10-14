@@ -68,11 +68,55 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
 
     }
 
+    
+    async function deleteDeck(){
+        const { response, error } = await CustomFetch(`/deck/delete/${id}`);
+
+        if(error){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+        if(response?.success){
+            reload_deck();
+            return toast({
+                title: "Success",
+                variant: "default",
+                description: "Deck supprimé",
+            });
+        }else{
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: response.message
+            });
+        }
+    }
+
     return(
         <>
             <div className="flex justify-between items-center py-1">
                 <h4 className="text-xl capitalize">{ deck.deck_name }</h4>
-                <Button variant={"destructive"}>Supprimer</Button>
+                
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant={"destructive"}>Supprimer</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Voulez vous supprimer ce deck ?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Supprimer le deck
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="pt-4">
+                            <AlertDialogCancel>Non</AlertDialogCancel>
+                            <AlertDialogAction onClick={deleteDeck}>Oui</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
 
             <Separator orientation="horizontal" />

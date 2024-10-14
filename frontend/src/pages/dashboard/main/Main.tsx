@@ -26,7 +26,7 @@ export function Main({ decks, reload_deck }:MainProps){
 
     useEffect(() => {
         setSelectedDeck(decks[0]?.deck_name);
-        console.log(selectedDeck, decks[0]?.deck_name );
+        // console.log(selectedDeck, decks[0]?.deck_name );
     }, [decks]);
     
     useEffect(() => {
