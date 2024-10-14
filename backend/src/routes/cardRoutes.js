@@ -5,7 +5,6 @@ import { authenticateToken } from '../lib/auth.js';
 
 router.get('/', authenticateToken, async (req, res) => {
     const db = req.db;
-    const playerId = req.user.id;
 
     try {
         // Ensure `db.all` returns a promise correctly.
@@ -35,6 +34,26 @@ router.get('/', authenticateToken, async (req, res) => {
     }
 });
 
+router.post('/add', authenticateToken, async (req, res) => {
+    const db = req.db;
+    const deckId = req.body.deckId;
+    const newCardId = req.body.cardId;
+
+    try {
+        await new Promise((resolve, reject) => {
+            db.run('INSERT INTO deck_cards (deck_id, card_id) VALUES(?,?);', [deckId, newCardId], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this);
+            });
+        });
+        return res.status(201).json({ success: true, message: "Card added to deck" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'An error occurred while retrieving cards.' });
+    }
+})
 
 
 

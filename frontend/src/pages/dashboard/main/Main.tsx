@@ -139,6 +139,7 @@ export function Main({ decks, reload_deck }:MainProps){
                                 id={el.deck_id}
                                 card_list={allCards}
                                 deck={el}
+                                reload_deck={reload_deck}
                             />
                         </TabsContent>
                     ))}

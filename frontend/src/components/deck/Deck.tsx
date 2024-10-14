@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { DeckCard } from "../deckCard/DeckCard";
 import { PlayerDeckCard, PlayerDeck } from "@/interfaces/Deck";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
@@ -12,16 +11,61 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { CustomFetch } from "@/lib/CustomFetch";
   
 
 interface DeckProps{
     id:number,
     deck: PlayerDeck,
-    card_list: Array<PlayerDeckCard>
+    card_list: Array<PlayerDeckCard>,
+    reload_deck: () => void,
 }
-export function Deck({ id, deck, card_list }: DeckProps){
+export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
+    const { toast } = useToast();
+    const [newCard, setNewCard] = useState<number>();
+
     async function addCardToDeck(){
-        // TODO
+        if(!newCard){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Veuillez selectionner une carte",
+            });
+        }
+
+        const { response, error } = await CustomFetch('/card/add', {
+            method: 'POST',
+            body: JSON.stringify({ 
+                cardId: newCard,
+                deckId: id
+            }),
+        })
+
+        if(error){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+
+        if(response?.success){
+            reload_deck();
+            return toast({
+                title: "Success",
+                variant: "default",
+                description: "La carte a été ajouté",
+            });
+        }else{
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: response.message
+            });
+        }
+
     }
 
     return(
@@ -50,20 +94,20 @@ export function Deck({ id, deck, card_list }: DeckProps){
                                     <AlertDialogDescription>
                                         AJouter une carte a votre deck
                                     </AlertDialogDescription>
-                                    <Select>
+                                    <Select defaultValue={newCard?.toString() || ""} onValueChange={value => setNewCard(parseInt(value))}>
                                         <SelectTrigger className="w-[250px]">
                                             <SelectValue placeholder="Cartes" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {card_list.map((el, i) => (
-                                                <SelectItem key={i} value={el.name}>{el.name}</SelectItem>
+                                                <SelectItem key={i} value={el.id.toString()}>{el.name}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="pt-4">
                                     <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                    <AlertDialogAction type="submit">Valider</AlertDialogAction>
+                                    <AlertDialogAction onClick={addCardToDeck}>Valider</AlertDialogAction>
                                 </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
