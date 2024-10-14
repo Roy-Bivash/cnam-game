@@ -68,7 +68,6 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
 
     }
 
-    
     async function deleteDeck(){
         const { response, error } = await CustomFetch(`/deck/delete/${id}`);
 
@@ -93,6 +92,11 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
                 description: response.message
             });
         }
+    }
+
+    async function removeCardFromDeck(carteId: number){
+        // console.log(`remove : ${carteId} from ${id}`);
+        // TODO
     }
 
     return(
@@ -125,6 +129,7 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
                     <DeckCard 
                         key={i}
                         carte={el}
+                        removeCardFromDeck={removeCardFromDeck}
                     />
                 ))}
                 <Card className="">

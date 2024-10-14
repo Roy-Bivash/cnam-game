@@ -55,6 +55,11 @@ router.post('/add', authenticateToken, async (req, res) => {
     }
 })
 
+router.get('/remove/:deckId/:cardId', authenticateToken, async (req, res) => {
+    const db = req.db;
+    const { deckId, cardId } = req.params;
+    // TODO
+})
 
 
 export default router;

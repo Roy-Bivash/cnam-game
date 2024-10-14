@@ -53,7 +53,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
             if (card_id) {
                 result[deck_id].cards.push({
-                    card_id,
+                    id:card_id,
                     name: card_name,
                     image_url,
                     health,

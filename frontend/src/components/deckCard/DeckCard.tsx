@@ -8,7 +8,8 @@ import char2 from "@/assets/characters/2.png";
 import char3 from "@/assets/characters/3.png";
 
 interface DeckCardProps{
-    carte:PlayerDeckCard
+    carte:PlayerDeckCard,
+    removeCardFromDeck: (carteId: number) => void,
 }
 
 const image = {
@@ -33,7 +34,8 @@ const image = {
     "inamullah.png": char2,
 };
 
-export function DeckCard({ carte }: DeckCardProps){
+export function DeckCard({ carte, removeCardFromDeck }: DeckCardProps){
+    console.log(carte)
     return(
         <Card>
             <CardHeader>
@@ -48,7 +50,7 @@ export function DeckCard({ carte }: DeckCardProps){
                 </CardDescription>
             </CardHeader>
             <CardFooter className="justify-end">
-                <Button variant="link">Retirer</Button>
+                <Button variant="link" onClick={() => removeCardFromDeck(carte.id)}>Retirer</Button>
             </CardFooter>
         </Card>
     )
