@@ -56,7 +56,7 @@ export default function Dashboard(){
     return(
         <>
             <Header 
-                link={currentUser?.link}
+                link={currentUser?.link || ""}
             />
             <Main
                 decks={deckList}

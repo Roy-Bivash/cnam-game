@@ -39,7 +39,7 @@ export function DeckCard({ carte, removeCardFromDeck }: DeckCardProps){
     return(
         <Card>
             <CardHeader>
-                <div className="mb-4 relative h-64 w-full">
+                <div className="mb-4 relative lg:h-[350px] h-64 w-full">
                     <img src={image[carte.image_url]} className="absolute inset-0 w-full h-full object-cover" />
                 </div>
                 <CardTitle>{carte.name}</CardTitle>

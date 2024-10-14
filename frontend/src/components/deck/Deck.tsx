@@ -146,7 +146,7 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
             </div>
 
             <Separator orientation="horizontal" />
-            <div className="mt-2 grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+            <div className="mt-2 grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
                 {deck.cards.map((el, i) => (
                     <DeckCard 
                         key={i}
@@ -154,35 +154,37 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
                         removeCardFromDeck={removeCardFromDeck}
                     />
                 ))}
-                <Card className="">
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="ghost" className="w-full h-full text-xl">Ajouter</Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Carte</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        AJouter une carte a votre deck
-                                    </AlertDialogDescription>
-                                    <Select defaultValue={newCard?.toString() || ""} onValueChange={value => setNewCard(parseInt(value))}>
-                                        <SelectTrigger className="w-[250px]">
-                                            <SelectValue placeholder="Cartes" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {card_list.map((el, i) => (
-                                                <SelectItem key={i} value={el.id.toString()}>{el.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter className="pt-4">
-                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                    <AlertDialogAction onClick={addCardToDeck}>Valider</AlertDialogAction>
-                                </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </Card>
+                {deck.cards.length < 8 && (
+                    <Card className="">
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="ghost" className="w-full h-full text-xl">Ajouter</Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Carte</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            AJouter une carte a votre deck
+                                        </AlertDialogDescription>
+                                        <Select defaultValue={newCard?.toString() || ""} onValueChange={value => setNewCard(parseInt(value))}>
+                                            <SelectTrigger className="w-[250px]">
+                                                <SelectValue placeholder="Cartes" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {card_list.map((el, i) => (
+                                                    <SelectItem key={i} value={el.id.toString()}>{el.name}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter className="pt-4">
+                                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                        <AlertDialogAction onClick={addCardToDeck}>Valider</AlertDialogAction>
+                                    </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </Card>
+                )}
             </div>
         </>
     )
