@@ -58,7 +58,20 @@ router.post('/add', authenticateToken, async (req, res) => {
 router.get('/remove/:deckId/:cardId', authenticateToken, async (req, res) => {
     const db = req.db;
     const { deckId, cardId } = req.params;
-    // TODO
+    try {
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM deck_cards WHERE deck_id=? AND card_id=?;', [deckId, cardId], function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(this);
+            });
+        });
+        return res.status(201).json({ success: true, message: "Card removed from deck" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'An error occurred while removing cards.' });
+    }
 })
 
 

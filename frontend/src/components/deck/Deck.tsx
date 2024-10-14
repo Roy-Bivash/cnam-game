@@ -96,7 +96,29 @@ export function Deck({ id, deck, card_list, reload_deck }: DeckProps){
 
     async function removeCardFromDeck(carteId: number){
         // console.log(`remove : ${carteId} from ${id}`);
-        // TODO
+        
+        const { response, error } = await CustomFetch(`/card/remove/${id}/${carteId}`);
+        if(error){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Internal server error",
+            });
+        }
+        if(response?.success){
+            reload_deck();
+            return toast({
+                title: "Success",
+                variant: "default",
+                description: "Carte retiré",
+            });
+        }else{
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: response.message
+            });
+        }
     }
 
     return(
