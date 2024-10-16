@@ -6,14 +6,25 @@ import { Separator } from "@/components/ui/separator"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-
+import { PlayerDeck } from "@/interfaces/Deck";
+import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select";
+  
 interface HeaderInterface{
-    link:string
+    link:string,
+    decks: Array<PlayerDeck>,
 }
 
-export function Header({ link }: HeaderInterface){
+export function Header({ link, decks }: HeaderInterface){
     const navigate = useNavigate();
-    const { toast } = useToast()
+    const { toast } = useToast();
+    const [selectedDeckForMatch, setSelectedDeckForMatch] = useState<number>();
 
     async function logOutPlayer(){
         const res = await logOut();
@@ -27,6 +38,21 @@ export function Header({ link }: HeaderInterface){
         }
         navigate('/');
     }
+
+    function enterMatchMaking(){
+        if(!selectedDeckForMatch){
+            return toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Veuillez selectionner un deck"
+            })
+        }
+
+        console.log(`Enter queu with deck: ${selectedDeckForMatch}`);
+        
+        // TODO
+    }
+
     return(
         <nav className="px-6 py-3 border-b flex justify-between items-center">
                 <AlertDialog>
@@ -78,7 +104,33 @@ export function Header({ link }: HeaderInterface){
                         </AlertDialog>
                     </li>
                     <li>
-                        <Button variant="default">Jouer</Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="default">Jouer</Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Quel deck utiliser ?</AlertDialogTitle>
+                                    <Separator orientation="horizontal" />
+                                </AlertDialogHeader>
+                                <AlertDialogDescription className="pb-3 flex flex-col">
+                                    <Select defaultValue={selectedDeckForMatch?.toString() || ""} onValueChange={value => setSelectedDeckForMatch(parseInt(value))}>
+                                        <SelectTrigger className="w-[250px]">
+                                            <SelectValue placeholder="Cartes" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {decks.map((el, i) => (
+                                                <SelectItem key={i} value={el.deck_id.toString()}>{el.deck_name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </AlertDialogDescription>
+                                <AlertDialogFooter>
+                                    <AlertDialogAction onClick={enterMatchMaking}>Lancer</AlertDialogAction>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </li>
                 </ul>
             </nav>

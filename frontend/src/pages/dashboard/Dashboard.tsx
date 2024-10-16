@@ -15,6 +15,7 @@ export default function Dashboard(){
     const [currentUser, setCurrentUser] = useState<CurrentUser>();
     const [deckList, setDeckList] = useState<Array<PlayerDeck>>([]);
 
+    
     async function getAllMyDeck(){
         const { response, error } = await CustomFetch('/deck');
     
@@ -57,6 +58,7 @@ export default function Dashboard(){
         <>
             <Header 
                 link={currentUser?.link || ""}
+                decks={deckList}
             />
             <Main
                 decks={deckList}

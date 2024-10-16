@@ -19,13 +19,13 @@ interface MainProps {
 }
 
 export function Main({ decks, reload_deck }:MainProps){
-    const [selectedDeck, setSelectedDeck] = useState<string>(decks[0]?.deck_name);
+    const [selectedDeck, setSelectedDeck] = useState<PlayerDeck>(decks[0]);
     const [newDeckName, setNewDeckName] = useState<string>("");
     const [allCards, setAllCards] = useState<Array<PlayerDeckCard>>([]);
     const { toast } = useToast();
 
     useEffect(() => {
-        setSelectedDeck(decks[0]?.deck_name);
+        setSelectedDeck(decks?.[0]);
         // console.log(selectedDeck, decks[0]?.deck_name );
     }, [decks]);
     
@@ -81,7 +81,7 @@ export function Main({ decks, reload_deck }:MainProps){
         }
         if(response?.success){
             await reload_deck();
-            setSelectedDeck(newDeckName);
+            // setSelectedDeck(newDeckName);
             setNewDeckName("");
 
             return toast({
@@ -103,7 +103,7 @@ export function Main({ decks, reload_deck }:MainProps){
     return(
         <main className="py-10 px-2 lg:px-8">
             {selectedDeck && (
-                <Tabs defaultValue={selectedDeck}>
+                <Tabs defaultValue={selectedDeck.deck_name}>
                     <TabsList>
                         {decks.map((el, i) => (
                             <TabsTrigger key={i} value={el.deck_name}>{el.deck_name}</TabsTrigger>

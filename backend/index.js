@@ -5,17 +5,16 @@ import cookieParser from 'cookie-parser';
 import router from "./src/router.js";
 import { config } from "./src/config/config.js";
 import { initDb } from "./src/database/db.js";
+import { initWebSocketServer } from './src/services/matchmakingService.js';
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-
-// Configure CORS
 app.use(cors({
-    origin: config.CLIENT_URL, // Allow requests only from frontend
-    credentials: true, // Enable credentials (cookies/auth headers)
-    optionsSuccessStatus: 200 // Legacy browser support for some browsers
+    origin: config.CLIENT_URL,
+    credentials: true,
+    optionsSuccessStatus: 200
 }));
 
 initDb().then((db) => {
@@ -27,18 +26,15 @@ initDb().then((db) => {
         next();
     });
 
-    // Routes
     app.use('/', router);
 
-    // Home route
-    app.get('/', (req, res) => {
-        res.json({ message: "Welcome to the backend" });
-    });
-
-    // Start the server after the DB is initialized
-    app.listen(config.PORT, () => {
+    const server = app.listen(config.PORT, () => {
         console.log(`Backend app listening on port ${config.PORT}`);
     });
+
+    // Initialize WebSocket matchmaking
+    // Pass the HTTP server to WebSocket service
+    initWebSocketServer(server); 
 }).catch((err) => {
     console.error("Failed to initialize database:", err);
 });

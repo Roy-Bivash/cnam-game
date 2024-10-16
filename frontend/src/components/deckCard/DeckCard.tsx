@@ -35,7 +35,7 @@ const image = {
 };
 
 export function DeckCard({ carte, removeCardFromDeck }: DeckCardProps){
-    console.log(carte)
+    // console.log(carte)
     return(
         <Card>
             <CardHeader>
