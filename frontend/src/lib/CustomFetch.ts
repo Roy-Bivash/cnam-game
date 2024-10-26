@@ -1,7 +1,4 @@
-const config = { // Temporary
-    SERVER_URL: "http://localhost:5000",
-}
-
+import { config } from "@/config/config";
 /**
  * CustomFetch is a function that makes a fetch request to a specified URL with given options.
  * It automatically includes an Authorization header if a token is present in localStorage.

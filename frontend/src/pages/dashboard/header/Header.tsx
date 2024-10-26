@@ -48,9 +48,8 @@ export function Header({ link, decks }: HeaderInterface){
             })
         }
 
-        console.log(`Enter queu with deck: ${selectedDeckForMatch}`);
-        
-        // TODO
+        console.log(`redirect to queue with deck: ${selectedDeckForMatch}`);
+        navigate(`/queue/${selectedDeckForMatch}`);
     }
 
     return(

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
+import { initializeSocket } from './src/services/socket.js';
 
 import router from "./src/router.js";
 import { config } from "./src/config/config.js";
@@ -31,6 +32,7 @@ initDb().then((db) => {
         console.log(`Backend app listening on port ${config.PORT}`);
     });
 
+    const io = initializeSocket(server);
  
 }).catch((err) => {
     console.error("Failed to initialize database:", err);
