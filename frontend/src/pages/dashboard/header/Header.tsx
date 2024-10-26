@@ -116,7 +116,7 @@ export function Header({ link, decks }: HeaderInterface){
                                 <AlertDialogDescription className="pb-3 flex flex-col">
                                     <Select defaultValue={selectedDeckForMatch?.toString() || ""} onValueChange={value => setSelectedDeckForMatch(parseInt(value))}>
                                         <SelectTrigger className="w-[250px]">
-                                            <SelectValue placeholder="Cartes" />
+                                            <SelectValue placeholder="Choix ..." />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {decks.map((el, i) => (

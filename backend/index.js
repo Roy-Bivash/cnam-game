@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import router from "./src/router.js";
 import { config } from "./src/config/config.js";
 import { initDb } from "./src/database/db.js";
-import { initWebSocketServer } from './src/services/matchmakingService.js';
 
 const app = express();
 app.use(express.json());
@@ -32,9 +31,7 @@ initDb().then((db) => {
         console.log(`Backend app listening on port ${config.PORT}`);
     });
 
-    // Initialize WebSocket matchmaking
-    // Pass the HTTP server to WebSocket service
-    initWebSocketServer(server); 
+ 
 }).catch((err) => {
     console.error("Failed to initialize database:", err);
 });

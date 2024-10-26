@@ -1,4 +1,4 @@
-const config = {
+const config = { // Temporary
     SERVER_URL: "http://localhost:5000",
 }
 
