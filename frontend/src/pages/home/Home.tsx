@@ -11,6 +11,7 @@ import { Loader } from "@/components/loader/Loader";
 import { verifyPasswordInput, verifyTextInput } from "@/lib/form";
 import { CustomFetch } from "@/lib/CustomFetch";
 import { wait } from "@/lib/timer";
+import { ThemeButton } from "@/components/themeButton/ThemeButton";
 
 interface FormData {
     email: string | null;
@@ -137,6 +138,9 @@ export default function Home(){
                 <Loader />
             )}
             <main className="min-h-screen flex flex-col gap-8 items-center pt-[15vh]">
+                <div className="fixed top-2 right-2">
+                    <ThemeButton />
+                </div>
                 <h2 className="text-3xl">FIP Game</h2>
                 <Tabs defaultValue="connexion" className="w-[400px]">
                     <TabsList className="grid w-full grid-cols-2">
