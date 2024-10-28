@@ -1,4 +1,4 @@
-import { List, Moon, Sun, SunMoon } from "lucide-react";
+import { Moon, Sun, SunMoon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
