@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
-import { initializeSocket } from './src/services/socket.js';
+import { initializeSocket } from './src/socket/index.js';
 
 import router from "./src/router.js";
 import { config } from "./src/config/config.js";
@@ -20,7 +20,6 @@ app.use(cors({
 initDb().then((db) => {
     console.log("Database initialized");
 
-    // Make the db available in all routes
     app.use((req, res, next) => {
         req.db = db;
         next();
@@ -32,7 +31,8 @@ initDb().then((db) => {
         console.log(`Backend app listening on port ${config.PORT}`);
     });
 
-    const io = initializeSocket(server);
+    // Initialize socket.io
+    const socketManager = initializeSocket(server, config);
  
 }).catch((err) => {
     console.error("Failed to initialize database:", err);
