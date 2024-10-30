@@ -29,7 +29,7 @@ export default function Dashboard(){
         
         if(response?.success){
             setDeckList(response.decks)
-            // console.log(response.decks)
+            console.log(response.decks)
             return;
         }
 

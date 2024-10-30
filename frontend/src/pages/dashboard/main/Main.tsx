@@ -102,49 +102,47 @@ export function Main({ decks, reload_deck }:MainProps){
 
     return(
         <main className="py-10 px-2 lg:px-8">
-            {selectedDeck && (
-                <Tabs defaultValue={selectedDeck.deck_name}>
-                    <TabsList>
-                        {decks.map((el, i) => (
-                            <TabsTrigger key={i} value={el.deck_name}>{el.deck_name}</TabsTrigger>
-                        ))}
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button variant="link">New</Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <form onSubmit={newDeckForm}>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Une nouvelle compo ?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Créer votre deck ici
-                                        </AlertDialogDescription>
-                                        <div className="space-y-1">
-                                            <Label htmlFor="name">Nom</Label>
-                                            <Input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} id="name" placeholder="Nom du deck" />
-                                        </div>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter className="pt-4">
-                                        <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                        <AlertDialogAction type="submit">Valider</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </form>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                    </TabsList>
+            <Tabs defaultValue={selectedDeck?.deck_name}>
+                <TabsList>
                     {decks.map((el, i) => (
-                        <TabsContent key={i} value={el.deck_name}>
-                            <Deck 
-                                key={i}
-                                id={el.deck_id}
-                                card_list={allCards}
-                                deck={el}
-                                reload_deck={reload_deck}
-                            />
-                        </TabsContent>
+                        <TabsTrigger key={i} value={el.deck_name}>{el.deck_name}</TabsTrigger>
                     ))}
-                </Tabs>
-            )}
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="link">New</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <form onSubmit={newDeckForm}>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Une nouvelle compo ?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Créer votre deck ici
+                                    </AlertDialogDescription>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="name">Nom</Label>
+                                        <Input value={newDeckName} onChange={e => setNewDeckName(e.target.value)} id="name" placeholder="Nom du deck" />
+                                    </div>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter className="pt-4">
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction type="submit">Valider</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </form>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                </TabsList>
+                {decks.map((el, i) => (
+                    <TabsContent key={i} value={el.deck_name}>
+                        <Deck 
+                            key={i}
+                            id={el.deck_id}
+                            card_list={allCards}
+                            deck={el}
+                            reload_deck={reload_deck}
+                        />
+                    </TabsContent>
+                ))}
+            </Tabs>
 
         </main>
     )
