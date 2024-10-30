@@ -7,12 +7,12 @@ export class GameHandler {
     handlePlayCard(socket, data) {
         const { gameId, cardId, position } = data;
 
-        // TODO
+        // ...
         
     }
 
     handleEndTurn(socket, data) {
         const { gameId } = data;
-        // TODO
+        // ...
     }
 }
