@@ -43,6 +43,7 @@ export function Main({ decks, reload_deck }:MainProps){
             });
         }
         if(response?.success){
+            response.cards.sort((a:PlayerDeckCard, b:PlayerDeckCard) => a.name.localeCompare(b.name));
             setAllCards(response.cards);
 
             return;
